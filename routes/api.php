@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('checkNodeID')->group(function () {
+Route::middleware('checkNodeID')
+    ->group(function () {
     /* API ReceiveLog */
     Route::post("/logs", [LogReceiverController::class, 'store'])->name('logreceiver.store');
 });

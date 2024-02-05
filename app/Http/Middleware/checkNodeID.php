@@ -12,9 +12,11 @@ class checkNodeID
 
     public function handle(Request $request, Closure $next): Response
     {
-        $apikey =  config('app.admin_name');
+        $apikey =  config('app.api_key');
 
-        if(empty($request->key) || $apikey !== $request->key || empty($request->id) || !Node::whereID($request->id)->whereStatus(true)->first()->exists()){
+        $id = $request->node_id ?? '';
+
+        if(empty($request->key) || $apikey !== $request->key || empty($id) || !Node::whereId($id)->first()->exists()){
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 

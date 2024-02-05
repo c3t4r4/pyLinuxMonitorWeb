@@ -1,22 +1,35 @@
-<script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
-</script>
-
 <template>
-    <AppLayout title="Dashboard">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Dashboard
-            </h2>
-        </template>
-
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                    <Welcome />
-                </div>
-            </div>
-        </div>
-    </AppLayout>
+    <DefaultPanel title="Dashboard">
+        <Stats :groups="groups"/>
+    </DefaultPanel>
 </template>
+
+<script setup>
+    import { Inertia } from '@inertiajs/inertia';
+    import Stats from "@/Customs/Panels/Stats.vue";
+    import DefaultPanel from "@/Customs/Panels/DefaultPanel.vue";
+
+    const props = defineProps({
+        groups: Object
+    });
+
+    import { onMounted, onUnmounted, ref } from 'vue';
+
+    let intervalId;
+
+    const seconds = 10 * 1000; // 10 Segudnos
+
+    const refreshData = () => {
+        Inertia.reload({ only: ['groups'] }); // Recarrega apenas o componente específico se necessário
+    };
+
+    onMounted(() => {
+        // Configurar o intervalo para chamar refreshData a cada 5 segundos
+        intervalId = setInterval(refreshData, seconds);
+    });
+
+    onUnmounted(() => {
+        // Limpar o intervalo quando o componente for desmontado
+        clearInterval(intervalId);
+    });
+</script>

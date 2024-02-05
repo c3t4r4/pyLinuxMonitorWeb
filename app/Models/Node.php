@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 
 class Node extends Model
 {
@@ -20,7 +22,8 @@ class Node extends Model
     protected $fillable = [
         'name',
         'observation',
-        'user_id',
+        'hostname',
+        'group_id',
     ];
 
     /** Relationships */
@@ -32,15 +35,26 @@ class Node extends Model
 
     public function logs(): HasMany
     {
-        return $this->hasMany(Log::class);
+        return $this->hasMany(Log::class)->latest();
     }
 
-    public function last_log(): HasMany
+    public function lastlog(): HasOne
     {
-        return $this->logs()->latest()->first();
+        return $this->hasOne(Log::class)->latest();
     }
 
     /** Scopes */
+    public function scopePermitedAll($query)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Get IDS of Groups of User Auth
+        $groupsIDS = $user->groups()->pluck('id')->toArray();
+
+        return $query->whereIn('group_id', $groupsIDS)
+            ->orderBy('name');
+    }
 
     /** Attributes */
     protected function status(): Attribute

@@ -32,7 +32,7 @@ class Group extends Model
 
     public function nodes(): HasMany
     {
-        return $this->hasMany(Node::class);
+        return $this->hasMany(Node::class)->with('lastlog');
     }
 
     public function active_nodes(): HasMany

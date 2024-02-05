@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Uuidable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,19 @@ class Log extends Model
     /** Scopes */
 
     /** Attributes */
+    public function setHostnameAttribute($value)
+    {
+        $this->attributes['hostname'] = $value;
+
+        $node = Node::find($this->node_id);
+
+        if(empty($node->hostname)){
+            $node->hostname = $value;
+            $node->save();
+        }
+    }
+
+
 
     /** Functions */
 }

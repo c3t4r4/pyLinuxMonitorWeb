@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('nodes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('hostname')->nullable();
             $table->string('observation')->nullable();
 
             /** Status */
