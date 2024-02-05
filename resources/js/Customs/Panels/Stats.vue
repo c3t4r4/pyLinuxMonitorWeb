@@ -18,15 +18,15 @@
                             <table class="w-full text-left">
                                 <tbody>
                                 <template v-for="(item, itemIndex) in groups" :key="itemIndex">
-                                    <tr class="text-sm leading-6 text-gray-900">
-                                        <th scope="colgroup" colspan="3" class="relative isolate py-2 font-semibold">
-                                            <time>Grupo: {{ item.name }}</time>
+                                    <tr class="my-5 text-sm leading-6 text-gray-900 ">
+                                        <th scope="colgroup" colspan="3" class="relative isolate py-2 font-semibold ">
+                                            <time class="font-semibold text-base ">Grupo: {{ item.name }}</time>
                                             <div class="absolute inset-y-0 right-full -z-10 w-screen border-b border-gray-200 bg-gray-50" />
                                             <div class="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50" />
                                             <div class="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50" />
                                         </th>
                                     </tr>
-                                    <dl v-for="node in item.nodes" :key="node.id" class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-4 md:divide-x md:divide-y-0">
+                                    <dl v-for="node in item.nodes" :key="node.id" class="my-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-4 md:divide-x md:divide-y-0">
                                         <div  class="px-4 py-5 sm:p-6">
                                             <dt class="text-base font-normal text-gray-900">{{ (node.hostname ? node.hostname : "Aguardando") }} - Processador</dt>
                                             <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
