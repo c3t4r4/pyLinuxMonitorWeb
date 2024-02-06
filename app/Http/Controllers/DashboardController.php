@@ -13,6 +13,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $ontem = Carbon::now()->subDay();
+
+        Log::where('created_at', '<', $ontem)->each->delete();
+
         $groups = Group::with('nodes')->permitedAll()->get();
 
         return Inertia::render('Dashboard', [
