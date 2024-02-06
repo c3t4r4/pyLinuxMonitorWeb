@@ -38,11 +38,14 @@ class NodeController extends Controller
         ]);
     }
 
-    public function removeOldLogs()
+    public function removeOldLogs(): void
     {
         $ontem = Carbon::now()->subDay();
         $ids = Log::where('created_at', '<', $ontem)->get()->pluck('id')->toArray();
-        Log::whereIn('id', $ids)->delete();
+        if(count($ids) > 0){
+            Log::whereIn('id', $ids)->delete();
+            session()->flash('message', count($ids).' Logs Excluídos.');
+        }
     }
 
     /**
