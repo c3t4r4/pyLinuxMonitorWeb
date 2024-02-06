@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Log;
 use App\Models\Node;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -16,6 +18,8 @@ class NodeController extends Controller
      */
     public function index(Request $request)
     {
+        $this->removeOldLogs();
+
         $nodes = Node::permitedAll()
             ->with('group')
             ->when($request->search, function ($query, $search){
@@ -32,6 +36,13 @@ class NodeController extends Controller
             "nodes" => $nodes,
             "filters" => $request->only(['search'])
         ]);
+    }
+
+    public function removeOldLogs()
+    {
+        $ontem = Carbon::now()->subDay();
+        $ids = Log::where('created_at', '<', $ontem)->get()->pluck('id')->toArray();
+        Log::whereIn('id', $ids)->delete();
     }
 
     /**
