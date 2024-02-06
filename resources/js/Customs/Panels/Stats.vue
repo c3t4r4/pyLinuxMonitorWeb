@@ -66,7 +66,7 @@
                                         <div class="px-4 py-5 sm:p-6">
                                             <dt class="text-base font-normal text-gray-900">Data Update</dt>
                                             <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
-                                                <div v-if="node.lastlog" class="flex items-baseline font-semibold text-emerald-900">
+                                                <div v-if="node.lastlog" :class="[verificarMenosDeDuasHoras(node.lastlog.created_at) ? 'text-red-600' : 'text-emerald-900', 'flex items-baseline font-semibold']">
                                                     {{ (node.lastlog.created_at ? moment(node.lastlog.created_at).format("DD/MM/YYYY H:mm:ss") : "-") }}
                                                 </div>
                                                 <div v-else class="flex items-baseline font-semibold text-emerald-900">
@@ -109,6 +109,13 @@
         clearInterval(intervalId);
     });
 
+    const verificarMenosDeDuasHoras = (horaAtualString) => {
+        const agora = new Date(horaAtualString); // converte a string de hora atual para um objeto Date
+        const suaDateTime = new Date(); // hora atual do sistema
+        const diferencaEmMilissegundos = suaDateTime - agora; // diferença em milissegundos
+        const duasHorasEmMilissegundos = 1 * 60 * 60 * 1000; // uma horas em milissegundos
 
+        return diferencaEmMilissegundos <= duasHorasEmMilissegundos;
+    };
 </script>
 
