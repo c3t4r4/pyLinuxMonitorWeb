@@ -14,8 +14,8 @@ class DashboardController extends Controller
     public function index()
     {
         $ontem = Carbon::now()->subDay();
-
-        Log::where('created_at', '<', $ontem)->each->delete();
+        $ids = Log::where('created_at', '<', $ontem)->get()->pluck('id')->toArray();
+        Log::whereIn('id', $ids)->delete();
 
         $groups = Group::with('nodes')->permitedAll()->get();
 
