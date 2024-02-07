@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Log extends Model
 {
@@ -21,9 +22,7 @@ class Log extends Model
         'cpu_total',
         'ram_usage',
         'ram_total',
-        'disk_usage',
         'cpu_usage',
-        'disk_total',
         'node_id',
     ];
 
@@ -32,6 +31,11 @@ class Log extends Model
     public function node(): BelongsTo
     {
         return $this->belongsTo(Node::class);
+    }
+
+    public function disks(): HasMany
+    {
+        return $this->hasMany(Disk::class);
     }
 
     /** Scopes */

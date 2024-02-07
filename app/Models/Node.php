@@ -40,7 +40,7 @@ class Node extends Model
 
     public function lastlog(): HasOne
     {
-        return $this->hasOne(Log::class)->latest();
+        return $this->hasOne(Log::class)->with('disks')->latest();
     }
 
     /** Scopes */

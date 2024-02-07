@@ -51,18 +51,24 @@
                                                 </div>
                                             </dd>
                                         </div>
-                                        <div class="px-4 py-5 sm:p-6">
-                                            <dt class="text-base font-normal text-gray-900">SSD / HDD</dt>
-                                            <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
-                                                <div v-if="node.lastlog" class="flex items-baseline font-semibold text-indigo-600">
-                                                    Uso: {{ node.lastlog.disk_usage }}% de {{ node.lastlog.disk_total }} Gb
-                                                </div>
 
-                                                <div v-else class="flex items-baseline font-semibold text-indigo-600">
-                                                    Aguardando
+                                        <div v-if="node.lastlog" class="px-4 py-5 sm:p-6">
+                                            <dt class="text-base font-normal text-gray-900">SSD / HDD</dt>
+                                            <dd v-for="disk in node.lastlog.disks" :key="node.id"
+                                                class="mt-1 flex items-baseline justify-between md:block lg:flex">
+                                                <div class="flex items-baseline font-semibold text-indigo-600">
+                                                    {{ disk.disk }} - Uso: {{ disk.percent_usage }}% de {{ disk.total }} Gb
                                                 </div>
                                             </dd>
                                         </div>
+
+                                        <div v-else class="px-4 py-5 sm:p-6">
+                                            <dt class="text-base font-normal text-gray-900">SSD / HDD</dt>
+                                            <div class="flex items-baseline font-semibold text-indigo-600">
+                                                Aguardando
+                                            </div>
+                                        </div>
+
                                         <div class="px-4 py-5 sm:p-6">
                                             <dt class="text-base font-normal text-gray-900">Data Update</dt>
                                             <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
