@@ -16,7 +16,7 @@ class checkNodeID
 
         $id = $request->node_id ?? '';
 
-        if(empty($request->key) || $apikey !== $request->key || empty($id) || !Node::whereId($id)->first()->exists()){
+        if(empty($request->key) || $apikey !== $request->key || empty($id) || !Node::whereId($id)->first()){
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
