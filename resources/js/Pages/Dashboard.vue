@@ -5,7 +5,6 @@
 </template>
 
 <script setup>
-    import { Inertia } from '@inertiajs/inertia';
     import Stats from "@/Customs/Panels/Stats.vue";
     import DefaultPanel from "@/Customs/Panels/DefaultPanel.vue";
 
@@ -13,14 +12,17 @@
         groups: Object
     });
 
-    import { onMounted, onUnmounted, ref } from 'vue';
+    import { onMounted, onUnmounted } from 'vue';
+    import {router} from "@inertiajs/vue3";
 
     let intervalId;
 
     const seconds = 10 * 1000; // 10 Segudnos
 
     const refreshData = () => {
-        Inertia.reload({ only: ['groups'] }); // Recarrega apenas o componente específico se necessário
+        router.get(route("dashboard"),  {
+            preserveState: true
+        });
     };
 
     onMounted(() => {
