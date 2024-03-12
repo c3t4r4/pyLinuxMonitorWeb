@@ -20,9 +20,7 @@
     const seconds = 10 * 1000; // 10 Segudnos
 
     const refreshData = () => {
-        router.get(route("dashboard"),  {
-            preserveState: true
-        });
+        router.reload({ only: ['groups'] })
     };
 
     onMounted(() => {
