@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\DeleteOldRecordsJob;
 use App\Models\Group;
 use App\Models\Log;
 use Carbon\Carbon;
@@ -13,9 +14,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $ontem = Carbon::now()->subDay();
-        $ids = Log::where('created_at', '<', $ontem)->get()->pluck('id')->toArray();
-        Log::whereIn('id', $ids)->delete();
+        DeleteOldRecordsJob::dispatch();
 
         $groups = Group::with('nodes')->permitedAll()->get();
 
