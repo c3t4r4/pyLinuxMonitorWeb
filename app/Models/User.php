@@ -21,8 +21,9 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
     public $incrementing = false;
-    protected $keyType = 'uuid';
 
     protected $fillable = [
         'name',

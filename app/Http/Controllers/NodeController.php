@@ -18,8 +18,6 @@ class NodeController extends Controller
      */
     public function index(Request $request)
     {
-        $this->removeOldLogs();
-
         $nodes = Node::permitedAll()
             ->with('group')
             ->when($request->search, function ($query, $search){
@@ -36,16 +34,6 @@ class NodeController extends Controller
             "nodes" => $nodes,
             "filters" => $request->only(['search'])
         ]);
-    }
-
-    public function removeOldLogs(): void
-    {
-        $ontem = Carbon::now()->subDay();
-        $ids = Log::where('created_at', '<', $ontem)->get()->pluck('id')->toArray();
-        if(count($ids) > 0){
-            Log::whereIn('id', $ids)->delete();
-            session()->flash('message', count($ids).' Logs Excluídos.');
-        }
     }
 
     /**

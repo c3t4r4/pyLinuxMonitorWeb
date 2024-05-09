@@ -12,8 +12,9 @@ class Disk extends Model
     use HasFactory;
     use Uuidable;
 
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
     public $incrementing = false;
-    protected $keyType = 'uuid';
 
     protected $fillable = [
         'disk',

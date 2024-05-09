@@ -14,8 +14,9 @@ class Log extends Model
     use Uuidable;
     use HasFactory;
 
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
     public $incrementing = false;
-    protected $keyType = 'uuid';
     protected $fillable = [
         'hostname',
         'cpu_usage',
