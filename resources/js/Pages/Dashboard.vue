@@ -17,14 +17,14 @@
 
     let intervalId;
 
-    const seconds = 10 * 1000; // 10 Segudnos
+    const seconds = 60 * 1000; // 60 Segudnos
 
     const refreshData = () => {
         router.reload({ only: ['groups'] })
     };
 
     onMounted(() => {
-        // Configurar o intervalo para chamar refreshData a cada 5 segundos
+        // Configurar o intervalo para chamar refreshData a cada 60 segundos
         intervalId = setInterval(refreshData, seconds);
     });
 
