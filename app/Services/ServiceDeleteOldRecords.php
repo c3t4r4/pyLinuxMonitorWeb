@@ -10,10 +10,10 @@ class ServiceDeleteOldRecords
 {
     public static function Remove(): void
     {
-        $ontem = Carbon::now()->subDay();
+        $anterior = Carbon::now()->subMinutes(3);
 
-        Log::where('created_at', '<', $ontem)->take(30)->delete();
-        Disk::where('created_at', '<', $ontem)->take(30)->delete();
+        Log::where('created_at', '<', $anterior)->delete();
+        Disk::where('created_at', '<', $anterior)->delete();
 
     }
 }
