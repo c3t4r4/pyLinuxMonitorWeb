@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\DeleteOldLogsByNodeJob;
 use App\Models\Disk;
 use App\Models\Log;
+use App\Models\Node;
 use Illuminate\Http\Request;
 use Throwable;
 
@@ -24,6 +24,12 @@ class LogReceiverController extends Controller
                 ->json("Registro não criado!", 400);
         }
 
+        $node = Node::find($request->node_id);
+
+        if($node){
+            $node->logs()->where('id','<>', $log->id)->delete();
+        }
+
         if(!empty($request->disks) && count($request->disks) > 0){
             foreach ($request->disks as $disk){
                 $nDisk = new Disk();
@@ -35,13 +41,6 @@ class LogReceiverController extends Controller
                 $nDisk->save();
             }
         }
-
-        try {
-            DeleteOldLogsByNodeJob::dispatch($log->node());
-        } catch (Throwable $e) {
-            Log::error('Erro ao deletar registros antigos on LogReceiverController: ' . $e->getMessage());
-        }
-
 
         return response()->json('Registrado com Sucesso!!!', 201);
     }

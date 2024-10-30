@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property mixed $node_id
+ * @property mixed $id
  * @method static error(string $string)
  */
 class Log extends Model
