@@ -14,6 +14,8 @@ class DeleteOldRecordsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public int $timeout = 60 * 10; // 10 minutes
+
     /**
      * Create a new job instance.
      */
