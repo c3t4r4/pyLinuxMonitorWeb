@@ -25,7 +25,6 @@ class LogReceiverController extends Controller
         }
 
         $node = Node::find($request->node_id);
-
         if($node){
             $node->logs()->where('id','<>', $log->id)->delete();
         }
