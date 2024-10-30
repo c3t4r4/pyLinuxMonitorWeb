@@ -15,9 +15,9 @@ class DeleteOldLogsByNodeJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private Node $node;
-    public function __construct(String $node_id)
+    public function __construct(Node $node)
     {
-        $this->node = Node::find($node_id)->first();
+        $this->node = $node;
     }
 
     /**

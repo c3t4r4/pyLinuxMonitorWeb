@@ -37,7 +37,7 @@ class LogReceiverController extends Controller
         }
 
         try {
-            DeleteOldLogsByNodeJob::dispatch($log->node_id);
+            DeleteOldLogsByNodeJob::dispatch($log->node());
         } catch (Throwable $e) {
             Log::error('Erro ao deletar registros antigos on LogReceiverController: ' . $e->getMessage());
         }
