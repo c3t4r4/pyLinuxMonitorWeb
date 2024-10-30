@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\Uuidable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class Group extends Model
 {
     use Uuidable;
-    use HasFactory;
 
     protected $primaryKey = 'id';
     protected $keyType = 'string';
