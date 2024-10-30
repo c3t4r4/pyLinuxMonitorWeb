@@ -10,14 +10,14 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class DeleteOldLogsByNode implements ShouldQueue
+class DeleteOldLogsByNodeJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private Node $node;
-    public function __construct(Node $node)
+    public function __construct(String $node_id)
     {
-        $this->node = $node;
+        $this->node = Node::find($node_id)->first();
     }
 
     /**
@@ -25,6 +25,8 @@ class DeleteOldLogsByNode implements ShouldQueue
      */
     public function handle(): void
     {
-        ServiceDeleteOldRecords::RemoveByNode($this->node);
+        if(!empty($this->node)){
+            ServiceDeleteOldRecords::RemoveByNode($this->node);
+        }
     }
 }

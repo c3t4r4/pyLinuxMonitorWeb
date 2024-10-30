@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\DeleteOldLogsByNode;
+use App\Jobs\DeleteOldLogsByNodeJob;
 use App\Models\Disk;
 use App\Models\Log;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class LogReceiverController extends Controller
         }
 
         try {
-            DeleteOldLogsByNode::dispatch($log->node_id);
+            DeleteOldLogsByNodeJob::dispatch($log->node_id);
         } catch (Throwable $e) {
             Log::error('Erro ao deletar registros antigos on LogReceiverController: ' . $e->getMessage());
         }
