@@ -47,23 +47,6 @@ class DeleteOldRecordsJob implements ShouldQueue
      */
     public function handle(): void
     {
-        try {
-            // Chamar a função Remove() do serviço
-            ServiceDeleteOldRecords::Remove();
-        } catch (Throwable $e) {
-            // Registrar erros no log para análise futura
-            Log::error('Erro ao deletar registros antigos: ' . $e->getMessage());
-
-            // Re-lançar a exceção para que o Laravel trate a falha (re-tentativa ou falha final)
-            throw $e;
-        }
-    }
-
-    /**
-     * Define um tempo limite de re-tentativa.
-     */
-    public function retryUntil(): Carbon
-    {
-        return now()->addMinutes(60); // Permitir re-tentativas por até 30 minutos
+        ServiceDeleteOldRecords::Remove();
     }
 }
