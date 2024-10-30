@@ -14,16 +14,17 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Verifica se existe uma data de última execução na session
+        // Recupera a última execução do cache
         $lastRun = Cache::get('delete_records_last_run');
-        $today = Carbon::now()->format('Y-m-d'); // Formata como 'YYYY-MM-DD'
+        $now = Carbon::now();
 
-        // Se não houver data ou a data for diferente de hoje, dispara o job
-        if (!$lastRun || $lastRun < $today) {
+        // Se não houver data ou passaram mais de 30 minutos, dispara o job
+        if (!$lastRun || $now->diffInMinutes(Carbon::parse($lastRun)) >= 30) {
+            // Dispara o job para remover registros antigos
             DeleteOldRecordsJob::dispatch();
 
-            // Armazena a data atual na session
-            Cache::put('delete_records_last_run', $today);
+            // Armazena a data e hora atual no cache
+            Cache::put('delete_records_last_run', $now);
         }
 
         $groups = Group::with('nodes')->permitedAll()->get();
