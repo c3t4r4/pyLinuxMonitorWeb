@@ -12,14 +12,12 @@ class ServiceDeleteOldRecords
     public static function Remove(): void
     {
         $logsID = [];
-        $disksID = [];
 
         // Processa os nodes em chunks para evitar consumo excessivo de memória
-        Node::with('lastlog')->chunk(100, function ($nodes) use (&$logsID, &$disksID) {
+        Node::with('lastlog')->chunk(100, function ($nodes) use (&$logsID) {
             foreach ($nodes as $node) {
                 if ($node->lastlog) {
                     $logsID[] = $node->lastlog->id;
-                    $disksID[] = $node->lastlog->disk_id;
                 }
             }
         });
@@ -31,13 +29,6 @@ class ServiceDeleteOldRecords
             ->whereNotIn('id', $logsID)
             ->chunk(100, function ($logs) {
                 $logs->each->delete(); // Exclusão segura por blocos
-            });
-
-        // Exclui discos antigos que não estão na lista de disksID em blocos
-        Disk::where('created_at', '<', $anterior)
-            ->whereNotIn('id', $disksID)
-            ->chunk(100, function ($disks) {
-                $disks->each->delete(); // Exclusão segura por blocos
             });
     }
 
