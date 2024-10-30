@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\DeleteOldRecordsJob;
+use App\Jobs\DeleteOldLogsByNode;
 use App\Models\Disk;
 use App\Models\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Cache;
+use Throwable;
 
 class LogReceiverController extends Controller
 {
@@ -37,18 +36,12 @@ class LogReceiverController extends Controller
             }
         }
 
-        // Recupera a última execução do cache
-        $lastRun = Cache::get('delete_records_last_run');
-        $now = Carbon::now();
-
-        // Se não houver data ou passaram mais de 30 minutos, dispara o job
-        if (!$lastRun || $now->diffInMinutes(Carbon::parse($lastRun)) >= 30) {
-            // Dispara o job para remover registros antigos
-            DeleteOldRecordsJob::dispatch();
-
-            // Armazena a data e hora atual no cache
-            Cache::put('delete_records_last_run', $now);
+        try {
+            DeleteOldLogsByNode::dispatch($log->node_id);
+        } catch (Throwable $e) {
+            Log::error('Erro ao deletar registros antigos on LogReceiverController: ' . $e->getMessage());
         }
+
 
         return response()->json('Registrado com Sucesso!!!', 201);
     }

@@ -8,9 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
-use PHPUnit\Event\Dispatcher;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class DeleteOldRecordsJob implements ShouldQueue
@@ -41,10 +38,6 @@ class DeleteOldRecordsJob implements ShouldQueue
         //
     }
 
-    /**
-     * Execute the job.
-     * @throws Throwable
-     */
     public function handle(): void
     {
         ServiceDeleteOldRecords::Remove();

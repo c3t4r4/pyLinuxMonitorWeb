@@ -40,4 +40,14 @@ class ServiceDeleteOldRecords
                 $disks->each->delete(); // Exclusão segura por blocos
             });
     }
+
+    public static function RemoveByNode(Node $node): void
+    {
+        if(!empty($node)) {
+            $ids = $node->logs()->latest()->limit(2)->pluck('id')->toArray();
+            if (!empty($ids)) {
+                $node->logs()->whereNotIn('id', $ids)->delete();
+            }
+        }
+    }
 }
