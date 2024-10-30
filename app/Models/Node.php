@@ -34,12 +34,12 @@ class Node extends Model
 
     public function logs(): HasMany
     {
-        return $this->hasMany(Log::class)->latest()->first();
+        return $this->hasMany(Log::class)->latest();
     }
 
     public function lastlog(): HasOne
     {
-        return $this->hasOne(Log::class)->with('disks')->latest()->first();
+        return $this->hasOne(Log::class)->with('disks');
     }
 
     /** Scopes */
