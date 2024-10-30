@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Jobs\DeleteOldRecordsJob;
 use App\Models\Group;
-use App\Models\Log;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Inertia\Inertia;
@@ -14,7 +14,17 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        DeleteOldRecordsJob::dispatch();
+        // Verifica se existe uma data de última execução na session
+        $lastRun = Cache::get('delete_records_last_run');
+        $today = Carbon::now()->format('Y-m-d'); // Formata como 'YYYY-MM-DD'
+
+        // Se não houver data ou a data for diferente de hoje, dispara o job
+        if (!$lastRun || $lastRun < $today) {
+            DeleteOldRecordsJob::dispatch();
+
+            // Armazena a data atual na session
+            Cache::put('delete_records_last_run', $today);
+        }
 
         $groups = Group::with('nodes')->permitedAll()->get();
 
